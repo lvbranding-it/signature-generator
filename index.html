@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Signature Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Lato:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fira Sans', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .main-content {
+            flex-grow: 1;
+        }
+        /* Simple transition for a smoother feel */
+        .transition-all {
+            transition: all 0.3s ease-in-out;
+        }
+        .brand-bg { background-color: #cb2039; }
+        .brand-bg:hover { opacity: 0.9; }
+        .brand-text { color: #cb2039; }
+        .brand-border { border-color: #cb2039; }
+        .focus-brand-ring:focus {
+            --tw-ring-color: #cb2039;
+        }
+        /* Style for the color picker */
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 100%;
+            height: 40px;
+            border-radius: 0.375rem;
+            cursor: pointer;
+        }
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="main-content container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8">
+            <div class="flex justify-center mb-4">
+                <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 933.41 933.41" class="h-24 w-24">
+                    <defs><style>.cls-1{fill:#cb2039;}.cls-1,.cls-2{stroke-width:0px;}.cls-2{fill:#fff;}</style></defs>
+                    <g id="Layer_1-2">
+                        <circle class="cls-2" cx="466.7" cy="466.7" r="466.7"/>
+                        <path class="cls-1" d="M466.7,40.45c-107.68,0-206.03,39.93-281.06,105.79v245.11c0,10.75,8.71,19.46,19.46,19.46h141.11c14.56.14,18.03,10.07,19.26,21.98,1.29,12.59,2.25,23.88,4.15,40.14,2.18,18.51-7.76,23.75-23,23.75H120.53c-10.75,0-19.46-8.71-19.46-19.46v-229.72c-38.49,64.05-60.62,139.05-60.62,219.21,0,235.41,190.84,426.25,426.25,426.25,1.52,0,3.03-.01,4.55-.03-15.1-121.41-43.29-348.8-57.67-464.56-1.16-9.39,4.22-18.17,13.68-18.17h43.55c6.6,0,12.32,4.56,13.81,10.95,0,0,26.67,253.65,35.72,338.97,1.56,15.04,29.8,13.4,36.4-.2,43-88.66,119.48-250.59,161.25-338.57,2.86-6.06,9.46-10.68,16.13-10.61,20.14.27,47.49,0,61.85,0,13.27,0,17.96,9.05,13.68,17.49-60.51,118.86-167.77,325.41-232.37,450.24,181.81-48.7,315.68-214.59,315.68-411.76,0-235.41-190.84-426.25-426.25-426.25Z"/>
+                    </g>
+                </svg>
+            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Email Signature Generator</h1>
+            <p class="text-gray-600 mt-2">Create your professional email signature in seconds.</p>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Input Form -->
+            <div class="lg:w-1/3 bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-6 border-b pb-3">Your Details</h2>
+                <div class="space-y-4">
+                     <div>
+                        <label for="accentColor" class="block text-sm font-medium text-gray-700">Accent Color</label>
+                        <input type="color" id="accentColor" value="#cb2039" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+                    </div>
+                    <div>
+                        <label for="fontStyle" class="block text-sm font-medium text-gray-700">Font Style</label>
+                        <select id="fontStyle" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus-brand-ring focus:border-gray-300">
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', Times, serif">Times New Roman</option>
+                            <option value="Verdana, Geneva, sans-serif">Verdana</option>
+                            <option value="'Courier New', Courier, monospace">Courier New</option>
+                            <option value="'Inter', sans-serif" selected>Inter</option>
+                            <option value="'Roboto', sans-serif">Roboto</option>
+                            <option value="'Lato', sans-serif">Lato</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="fullName" class="block text-sm font-medium text-gray-700">Full Name</label>
+                        <input type="text" id="fullName" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label for="jobTitle" class="block text-sm font-medium text-gray-700">Job Title</label>
+                        <input type="text" id="jobTitle" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="Software Engineer">
+                    </div>
+                    <div>
+                        <label for="company" class="block text-sm font-medium text-gray-700">Company</label>
+                        <input type="text" id="company" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="Tech Solutions Inc.">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                        <input type="tel" id="phone" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="+1 (123) 456-7890">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <input type="email" id="email" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="john.doe@example.com">
+                    </div>
+                    <div>
+                        <label for="website" class="block text-sm font-medium text-gray-700">Website URL</label>
+                        <input type="url" id="website" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://example.com">
+                    </div>
+                     <div>
+                        <label for="imageUrl" class="block text-sm font-medium text-gray-700">Profile Picture URL</label>
+                        <input type="url" id="imageUrl" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://placehold.co/100x100">
+                    </div>
+                    <div>
+                        <label for="statement" class="block text-sm font-medium text-gray-700">Statement / Disclaimer</label>
+                        <textarea id="statement" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="e.g., This email and any attachments are confidential..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signature Preview -->
+            <div class="lg:w-2/3">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-semibold mb-4 border-b pb-3">Live Preview</h2>
+                    <div id="signature-preview-container" class="p-4 border border-dashed border-gray-300 rounded-lg bg-gray-50 min-h-[200px]">
+                        <!-- The signature will be rendered here -->
+                        <table id="signature-preview" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-family: 'Inter', sans-serif; color: #333;">
+                            <tbody>
+                                <tr>
+                                    <!-- Profile Picture -->
+                                    <td style="padding-right: 15px; vertical-align: top;">
+                                        <img id="preview-image" src="https://placehold.co/100x100/EFEFEF/3A3A3A?text=Photo" alt="Profile" width="100" height="100" style="border-radius: 50%; object-fit: cover;">
+                                    </td>
+                                    <!-- Details -->
+                                    <td id="details-cell" style="border-left: 2px solid #cb2039; padding-left: 15px; vertical-align: top;">
+                                        <p style="margin: 0; font-size: 18px; font-weight: bold; color: #000000;" id="preview-fullName">John Doe</p>
+                                        <p style="margin: 2px 0; font-size: 14px; color: #555555;">
+                                            <span id="preview-jobTitle">Software Engineer</span>
+                                            <span id="separator"> | </span>
+                                            <span id="preview-company" style="font-weight: bold;">Tech Solutions Inc.</span>
+                                        </p>
+                                        <div style="margin-top: 10px; font-size: 13px; color: #555555;">
+                                            <p style="margin: 2px 0;"><strong>P:</strong> <span id="preview-phone">+1 (123) 456-7890</span></p>
+                                            <p style="margin: 2px 0;"><strong>E:</strong> <a id="preview-email-link" href="mailto:john.doe@example.com" style="color: #cb2039; text-decoration: none;"><span id="preview-email">john.doe@example.com</span></a></p>
+                                            <p style="margin: 2px 0;"><strong>W:</strong> <a id="preview-website-link" href="https://example.com" target="_blank" style="color: #cb2039; text-decoration: none;"><span id="preview-website">https://example.com</span></a></p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <!-- Statement Row -->
+                                <tr id="statement-row" style="display: none;">
+                                    <td colspan="2" style="padding-top: 15px; font-size: 11px; color: #888888; font-style: italic;">
+                                        <p id="preview-statement" style="margin: 0;"></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button id="copyButton" class="mt-6 w-full brand-bg text-white py-3 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus-brand-ring transition-all shadow-lg">
+                        Copy Signature
+                    </button>
+                    <div id="copy-success" class="text-center text-green-600 font-medium mt-2 opacity-0 transition-opacity">
+                        Signature copied to clipboard!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="text-center p-4 text-gray-500 text-sm">
+        Made With Love by <a href="https://www.lvbranding.com" target="_blank" class="brand-text hover:underline">LV Branding</a>
+    </footer>
+
+    <script>
+        // Get all the input elements
+        const fullNameInput = document.getElementById('fullName');
+        const jobTitleInput = document.getElementById('jobTitle');
+        const companyInput = document.getElementById('company');
+        const phoneInput = document.getElementById('phone');
+        const emailInput = document.getElementById('email');
+        const websiteInput = document.getElementById('website');
+        const imageUrlInput = document.getElementById('imageUrl');
+        const statementInput = document.getElementById('statement');
+        const fontStyleInput = document.getElementById('fontStyle');
+        const accentColorInput = document.getElementById('accentColor');
+        const copyButton = document.getElementById('copyButton');
+        const copySuccessMessage = document.getElementById('copy-success');
+
+        // Get all the preview elements
+        const signaturePreviewTable = document.getElementById('signature-preview');
+        const previewFullName = document.getElementById('preview-fullName');
+        const previewJobTitle = document.getElementById('preview-jobTitle');
+        const previewCompany = document.getElementById('preview-company');
+        const previewPhone = document.getElementById('preview-phone');
+        const previewEmail = document.getElementById('preview-email');
+        const previewEmailLink = document.getElementById('preview-email-link');
+        const previewWebsite = document.getElementById('preview-website');
+        const previewWebsiteLink = document.getElementById('preview-website-link');
+        const previewImage = document.getElementById('preview-image');
+        const previewStatement = document.getElementById('preview-statement');
+        const separator = document.getElementById('separator');
+        const statementRow = document.getElementById('statement-row');
+        const detailsCell = document.getElementById('details-cell');
+
+        // Function to update the preview
+        function updatePreview() {
+            // Update text content, providing default values if input is empty
+            const fullName = fullNameInput.value || 'John Doe';
+            const jobTitle = jobTitleInput.value || 'Job Title';
+            const company = companyInput.value || 'Company Name';
+            const phone = phoneInput.value || '+1 (123) 456-7890';
+            const email = emailInput.value || 'your.email@example.com';
+            const website = websiteInput.value || 'https://example.com';
+            const imageUrl = imageUrlInput.value || 'https://placehold.co/100x100/EFEFEF/3A3A3A?text=Photo';
+            const statement = statementInput.value;
+            const fontStyle = fontStyleInput.value;
+            const accentColor = accentColorInput.value;
+
+            // Update text content
+            previewFullName.textContent = fullName;
+            previewJobTitle.textContent = jobTitle;
+            previewCompany.textContent = company;
+            previewPhone.textContent = phone;
+            previewEmail.textContent = email;
+            previewEmailLink.href = `mailto:${email}`;
+            previewWebsite.textContent = website;
+            previewWebsiteLink.href = website;
+            
+            // Update image source and add an error handler
+            previewImage.src = imageUrl;
+            previewImage.onerror = function() {
+                this.src = 'https://placehold.co/100x100/EFEFEF/3A3A3A?text=Error';
+            };
+
+            // Hide separator if both job title and company are empty
+            separator.style.display = (jobTitleInput.value && companyInput.value) ? 'inline' : 'none';
+
+            // Show or hide the statement row based on whether it has content
+            if (statement) {
+                statementRow.style.display = 'table-row';
+                previewStatement.textContent = statement;
+            } else {
+                statementRow.style.display = 'none';
+            }
+            
+            // Update font style
+            signaturePreviewTable.style.fontFamily = fontStyle;
+            
+            // Update accent color for separator and links
+            detailsCell.style.borderLeftColor = accentColor;
+            previewEmailLink.style.color = accentColor;
+            previewWebsiteLink.style.color = accentColor;
+        }
+
+        // Add event listeners to all input fields to update the preview in real-time
+        const inputs = [fullNameInput, jobTitleInput, companyInput, phoneInput, emailInput, websiteInput, imageUrlInput, statementInput, fontStyleInput, accentColorInput];
+        inputs.forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+
+        // Copy button functionality
+        copyButton.addEventListener('click', () => {
+            const signatureHTML = document.getElementById('signature-preview').outerHTML;
+            
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.style.position = 'absolute';
+            tempTextArea.style.left = '-9999px';
+            tempTextArea.value = signatureHTML;
+            document.body.appendChild(tempTextArea);
+            
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    const blob = new Blob([signatureHTML], { type: 'text/html' });
+                    const clipboardItem = new ClipboardItem({ 'text/html': blob });
+                    navigator.clipboard.write([clipboardItem]).then(() => {
+                        showSuccessMessage();
+                    });
+                } else {
+                    tempTextArea.select();
+                    document.execCommand('copy');
+                    showSuccessMessage();
+                }
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            } finally {
+                document.body.removeChild(tempTextArea);
+            }
+        });
+
+        function showSuccessMessage() {
+            copySuccessMessage.classList.remove('opacity-0');
+            setTimeout(() => {
+                copySuccessMessage.classList.add('opacity-0');
+            }, 2000); // Message disappears after 2 seconds
+        }
+
+        // Initial call to populate the preview with default values
+        updatePreview();
+    </script>
+
+</body>
+</html>
