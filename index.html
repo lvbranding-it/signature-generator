@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+//Made with Love by LV branding Developed By Luis Velasquez//
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -121,7 +122,27 @@
                             <option value="standard">Standard (4:3)</option>
                         </select>
                     </div>
-                    <div>
+                    <!-- Social Media Inputs -->
+                    <div class="border-t pt-4">
+                        <h3 class="text-lg font-semibold mb-2">Social Media</h3>
+                        <div>
+                            <label for="linkedin" class="block text-sm font-medium text-gray-700">LinkedIn</label>
+                            <input type="url" id="linkedin" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://linkedin.com/in/yourprofile">
+                        </div>
+                         <div class="mt-4">
+                            <label for="twitter" class="block text-sm font-medium text-gray-700">Twitter / X</label>
+                            <input type="url" id="twitter" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://x.com/yourprofile">
+                        </div>
+                         <div class="mt-4">
+                            <label for="instagram" class="block text-sm font-medium text-gray-700">Instagram</label>
+                            <input type="url" id="instagram" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://instagram.com/yourprofile">
+                        </div>
+                         <div class="mt-4">
+                            <label for="facebook" class="block text-sm font-medium text-gray-700">Facebook</label>
+                            <input type="url" id="facebook" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://facebook.com/yourprofile">
+                        </div>
+                    </div>
+                    <div class="border-t pt-4">
                         <label for="statement" class="block text-sm font-medium text-gray-700">Statement / Disclaimer</label>
                         <textarea id="statement" rows="3" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="e.g., This email and any attachments are confidential..."></textarea>
                     </div>
@@ -154,6 +175,12 @@
                                             <p style="margin: 2px 0;"><strong>E:</strong> <a id="preview-email-link" href="mailto:john.doe@example.com" style="color: #cb2039; text-decoration: none;"><span id="preview-email">john.doe@example.com</span></a></p>
                                             <p style="margin: 2px 0;"><strong>W:</strong> <a id="preview-website-link" href="https://example.com" target="_blank" style="color: #cb2039; text-decoration: none;"><span id="preview-website">https://example.com</span></a></p>
                                         </div>
+                                    </td>
+                                </tr>
+                                <!-- Social Media Row -->
+                                <tr id="social-row" style="display: none;">
+                                    <td colspan="2" style="padding-top: 15px;">
+                                        <div id="preview-socials"></div>
                                     </td>
                                 </tr>
                                 <!-- Statement Row -->
@@ -193,6 +220,10 @@
         const fontStyleInput = document.getElementById('fontStyle');
         const accentColorInput = document.getElementById('accentColor');
         const imageShapeInput = document.getElementById('imageShape');
+        const linkedinInput = document.getElementById('linkedin');
+        const twitterInput = document.getElementById('twitter');
+        const instagramInput = document.getElementById('instagram');
+        const facebookInput = document.getElementById('facebook');
         const copyButton = document.getElementById('copyButton');
         const copySuccessMessage = document.getElementById('copy-success');
 
@@ -211,6 +242,8 @@
         const separator = document.getElementById('separator');
         const statementRow = document.getElementById('statement-row');
         const detailsCell = document.getElementById('details-cell');
+        const socialRow = document.getElementById('social-row');
+        const previewSocials = document.getElementById('preview-socials');
 
         // Function to update the preview
         function updatePreview() {
@@ -286,10 +319,37 @@
                     previewImage.style.height = '100px';
                     break;
             }
+            
+            // Update Social Media Icons
+            previewSocials.innerHTML = ''; // Clear previous icons
+            let hasSocials = false;
+            const socialLinks = [
+                { url: linkedinInput.value, icon: 'linkedin', name: 'LinkedIn' },
+                { url: twitterInput.value, icon: 'x', name: 'Twitter' },
+                { url: instagramInput.value, icon: 'instagram', name: 'Instagram' },
+                { url: facebookInput.value, icon: 'facebook', name: 'Facebook' },
+            ];
+
+            socialLinks.forEach(social => {
+                if (social.url) {
+                    hasSocials = true;
+                    const iconHtml = `
+                        <a href="${social.url}" target="_blank" style="text-decoration: none; margin-right: 8px;">
+                            <img src="https://cdn.simpleicons.org/${social.icon}/888888" alt="${social.name}" width="24" height="24" style="display: inline-block;">
+                        </a>`;
+                    previewSocials.innerHTML += iconHtml;
+                }
+            });
+
+            socialRow.style.display = hasSocials ? 'table-row' : 'none';
         }
 
         // Add event listeners to all input fields to update the preview in real-time
-        const inputs = [fullNameInput, jobTitleInput, companyInput, phoneInput, emailInput, websiteInput, imageUrlInput, statementInput, fontStyleInput, accentColorInput, imageShapeInput];
+        const inputs = [
+            fullNameInput, jobTitleInput, companyInput, phoneInput, emailInput, websiteInput, 
+            imageUrlInput, statementInput, fontStyleInput, accentColorInput, imageShapeInput,
+            linkedinInput, twitterInput, instagramInput, facebookInput
+        ];
         inputs.forEach(input => {
             input.addEventListener('input', updatePreview);
         });
