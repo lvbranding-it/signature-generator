@@ -142,8 +142,12 @@
                         </div>
                     </div>
                     <div class="border-t pt-4">
-                        <label for="statement" class="block text-sm font-medium text-gray-700">Slogan</label>
-                        <textarea id="statement" rows="2" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="e.g., We innovate for you."></textarea>
+                        <label for="slogan" class="block text-sm font-medium text-gray-700">Slogan</label>
+                        <textarea id="slogan" rows="2" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="e.g., We innovate for you."></textarea>
+                    </div>
+                     <div class="border-t pt-4">
+                        <label for="statement" class="block text-sm font-medium text-gray-700">Statement / Disclaimer</label>
+                        <textarea id="statement" rows="2" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="e.g., This email is confidential..."></textarea>
                     </div>
                 </div>
             </div>
@@ -158,11 +162,11 @@
                             <tbody>
                                 <tr>
                                     <!-- Profile Picture -->
-                                    <td style="padding-right: 15px; vertical-align: middle;">
+                                    <td style="padding-right: 15px; vertical-align: top;">
                                         <img id="preview-image" src="https://placehold.co/100x100/EFEFEF/3A3A3A?text=Photo" alt="Profile" style="border-radius: 50%; width: 100px; height: 100px; object-fit: cover;">
                                     </td>
                                     <!-- Details -->
-                                    <td id="details-cell" style="border-left: 2px solid #cb2039; padding-left: 15px; vertical-align: middle;">
+                                    <td id="details-cell" style="border-left: 2px solid #cb2039; padding-left: 15px; vertical-align: top;">
                                         <p style="margin: 0; font-size: 18px; font-weight: bold; color: #000000;" id="preview-fullName">John Doe</p>
                                         <p style="margin: 2px 0; font-size: 14px; color: #555555;">
                                             <span id="preview-jobTitle">Software Engineer</span>
@@ -174,17 +178,18 @@
                                             <p style="margin: 2px 0;"><strong>E:</strong> <a id="preview-email-link" href="mailto:john.doe@example.com" style="color: #cb2039; text-decoration: none;"><span id="preview-email">john.doe@example.com</span></a></p>
                                             <p style="margin: 2px 0;"><strong>W:</strong> <a id="preview-website-link" href="https://example.com" target="_blank" style="color: #cb2039; text-decoration: none;"><span id="preview-website">https://example.com</span></a></p>
                                         </div>
-                                    </td>
-                                </tr>
-                                <!-- Social Media Row -->
-                                <tr id="social-row" style="display: none;">
-                                    <td colspan="2" style="padding-top: 15px;">
-                                        <div id="preview-socials"></div>
+                                        <div id="preview-socials" style="margin-top: 10px;"></div>
                                     </td>
                                 </tr>
                                 <!-- Slogan Row -->
-                                <tr id="statement-row" style="display: none;">
+                                <tr id="slogan-row" style="display: none;">
                                     <td colspan="2" style="padding-top: 15px; font-size: 13px; color: #555555; font-weight: bold; text-align: center;">
+                                        <p id="preview-slogan" style="margin: 0;"></p>
+                                    </td>
+                                </tr>
+                                <!-- Statement Row -->
+                                <tr id="statement-row" style="display: none;">
+                                    <td colspan="2" style="padding-top: 10px; font-size: 11px; color: #888888; font-style: italic; text-align: center;">
                                         <p id="preview-statement" style="margin: 0;"></p>
                                     </td>
                                 </tr>
@@ -215,6 +220,7 @@
         const emailInput = document.getElementById('email');
         const websiteInput = document.getElementById('website');
         const imageUrlInput = document.getElementById('imageUrl');
+        const sloganInput = document.getElementById('slogan');
         const statementInput = document.getElementById('statement');
         const fontStyleInput = document.getElementById('fontStyle');
         const accentColorInput = document.getElementById('accentColor');
@@ -237,11 +243,12 @@
         const previewWebsite = document.getElementById('preview-website');
         const previewWebsiteLink = document.getElementById('preview-website-link');
         const previewImage = document.getElementById('preview-image');
+        const previewSlogan = document.getElementById('preview-slogan');
         const previewStatement = document.getElementById('preview-statement');
         const separator = document.getElementById('separator');
+        const sloganRow = document.getElementById('slogan-row');
         const statementRow = document.getElementById('statement-row');
         const detailsCell = document.getElementById('details-cell');
-        const socialRow = document.getElementById('social-row');
         const previewSocials = document.getElementById('preview-socials');
 
         // Function to update the preview
@@ -254,6 +261,7 @@
             const email = emailInput.value || 'your.email@example.com';
             const website = websiteInput.value || 'https://example.com';
             const imageUrl = imageUrlInput.value || 'https://placehold.co/100x100/EFEFEF/3A3A3A?text=Photo';
+            const slogan = sloganInput.value;
             const statement = statementInput.value;
             const fontStyle = fontStyleInput.value;
             const accentColor = accentColorInput.value;
@@ -278,7 +286,15 @@
             // Hide separator if both job title and company are empty
             separator.style.display = (jobTitleInput.value && companyInput.value) ? 'inline' : 'none';
 
-            // Show or hide the statement row based on whether it has content
+            // Show or hide the slogan row
+            if (slogan) {
+                sloganRow.style.display = 'table-row';
+                previewSlogan.textContent = slogan;
+            } else {
+                sloganRow.style.display = 'none';
+            }
+
+            // Show or hide the statement row
             if (statement) {
                 statementRow.style.display = 'table-row';
                 previewStatement.textContent = statement;
@@ -321,7 +337,6 @@
             
             // Update Social Media Icons
             previewSocials.innerHTML = ''; // Clear previous icons
-            let hasSocials = false;
             const socialLinks = [
                 { url: linkedinInput.value, icon: 'linkedin', name: 'LinkedIn' },
                 { url: twitterInput.value, icon: 'x', name: 'Twitter' },
@@ -331,22 +346,19 @@
 
             socialLinks.forEach(social => {
                 if (social.url) {
-                    hasSocials = true;
                     const iconHtml = `
                         <a href="${social.url}" target="_blank" style="text-decoration: none; margin-right: 8px;">
-                            <img src="https://cdn.simpleicons.org/${social.icon}/888888" alt="${social.name}" width="24" height="24" style="display: inline-block;">
+                            <img src="https://cdn.simpleicons.org/${social.icon}/888888" alt="${social.name}" width="20" height="20" style="display: inline-block;">
                         </a>`;
                     previewSocials.innerHTML += iconHtml;
                 }
             });
-
-            socialRow.style.display = hasSocials ? 'table-row' : 'none';
         }
 
         // Add event listeners to all input fields to update the preview in real-time
         const inputs = [
             fullNameInput, jobTitleInput, companyInput, phoneInput, emailInput, websiteInput, 
-            imageUrlInput, statementInput, fontStyleInput, accentColorInput, imageShapeInput,
+            imageUrlInput, sloganInput, statementInput, fontStyleInput, accentColorInput, imageShapeInput,
             linkedinInput, twitterInput, instagramInput, facebookInput
         ];
         inputs.forEach(input => {
