@@ -43,6 +43,14 @@
             border: 1px solid #e2e8f0;
             border-radius: 0.375rem;
         }
+        /* Custom file input button */
+        .file-input-button {
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+        }
+        .file-input-button:hover {
+            background-color: #e5e7eb;
+        }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
@@ -109,8 +117,11 @@
                         <input type="url" id="website" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://example.com">
                     </div>
                      <div>
-                        <label for="imageUrl" class="block text-sm font-medium text-gray-700">Profile Picture/Logo URL</label>
-                        <input type="url" id="imageUrl" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus-brand-ring focus:border-gray-300" placeholder="https://placehold.co/100x100">
+                        <label for="imageUpload" class="block text-sm font-medium text-gray-700">Upload Picture/Logo</label>
+                        <input type="file" id="imageUpload" accept="image/*" class="hidden">
+                        <label for="imageUpload" class="mt-1 cursor-pointer w-full text-center px-3 py-2 rounded-md shadow-sm file-input-button block">Choose File</label>
+                        <p id="uploadStatus" class="text-xs text-gray-500 mt-1"></p>
+                        <input type="hidden" id="imageUrl">
                     </div>
                      <div>
                         <label for="imageShape" class="block text-sm font-medium text-gray-700">Image Shape</label>
@@ -211,7 +222,39 @@
         Made With Love by <a href="https://www.lvbranding.com" target="_blank" class="brand-text hover:underline">LV Branding</a>
     </footer>
 
-    <script>
+    <script type="module">
+        // Import Firebase modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-storage.js";
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyBntSc4gkUFkTR13EMLhsvVmTntVJTycbE",
+            authDomain: "lv-branding-esg.firebaseapp.com",
+            projectId: "lv-branding-esg",
+            storageBucket: "lv-branding-esg.appspot.com",
+            messagingSenderId: "605170507281",
+            appId: "1:605170507281:web:86691e391a97744a229bb0"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+        let currentUser = null;
+
+        // Sign in user anonymously
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                console.log("User signed in anonymously:", currentUser.uid);
+            } else {
+                signInAnonymously(auth).catch((error) => {
+                    console.error("Anonymous sign-in failed:", error);
+                });
+            }
+        });
+
         // Get all the input elements
         const fullNameInput = document.getElementById('fullName');
         const jobTitleInput = document.getElementById('jobTitle');
@@ -231,6 +274,8 @@
         const facebookInput = document.getElementById('facebook');
         const copyButton = document.getElementById('copyButton');
         const copySuccessMessage = document.getElementById('copy-success');
+        const imageUploadInput = document.getElementById('imageUpload');
+        const uploadStatus = document.getElementById('uploadStatus');
 
         // Get all the preview elements
         const signaturePreviewTable = document.getElementById('signature-preview');
@@ -250,6 +295,31 @@
         const statementRow = document.getElementById('statement-row');
         const detailsCell = document.getElementById('details-cell');
         const previewSocials = document.getElementById('preview-socials');
+
+        // Handle Image Upload
+        imageUploadInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (!currentUser) {
+                alert("Please wait, initializing user session.");
+                return;
+            }
+
+            const storageRef = ref(storage, `logos/${currentUser.uid}/${file.name}`);
+            uploadStatus.textContent = 'Uploading...';
+
+            uploadBytes(storageRef, file).then((snapshot) => {
+                getDownloadURL(snapshot.ref).then((downloadURL) => {
+                    imageUrlInput.value = downloadURL;
+                    uploadStatus.textContent = 'Upload complete!';
+                    updatePreview();
+                     setTimeout(() => { uploadStatus.textContent = ''; }, 3000);
+                });
+            }).catch((error) => {
+                console.error("Upload failed:", error);
+                uploadStatus.textContent = 'Upload failed.';
+            });
+        });
 
         // Function to update the preview
         function updatePreview() {
